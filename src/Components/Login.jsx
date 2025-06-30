@@ -2,9 +2,11 @@ import React from "react"
 
 import { Form, Button, Card} from "react-bootstrap"
 
+
 export default function Signup(){
-    const emailRef = React.useRef()
-    const passwordRef = React.useRef()
+    const [email, setEmail] = React.useState("")
+    const [password, setPassword] = React.useState("")
+
     return (
         <>
         <div style={{backgroundColor: '#f8fff8'}} className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -23,15 +25,26 @@ export default function Signup(){
                     <Form>
                         <Form.Group id="email" className="mt-2">
                             <Form.Label> Email</Form.Label>
-                            <Form.Control type="email" required ref={emailRef} />
+                            <Form.Control placeholder="Enter email" type="email" required onChange={(event) => setEmail(event.target.value)} />
                         </Form.Group>
 
                         <Form.Group id="password" className="mt-2">
                             <Form.Label> Password</Form.Label>
-                            <Form.Control type="password" required ref={passwordRef} />
+                            <Form.Control placeholder="Enter password" type="password" required onChange={(event) => setPassword(event.target.value)} />
                         </Form.Group>
 
-                        <Button className="mt-3"type="submit"> Login</Button>
+                        <div className="d-flex align-items-center">
+                            <Button className="mt-3 btn btn-dark" type="submit"> Login</Button>
+                            <Button className="mt-3 ms-3 btn btn-dark"type="submit">
+                                <img 
+                                   src="assets/google.png" 
+                                   alt="Google logo" 
+                                   width="30"
+                                   height="30"
+                                   />
+                                 Sign in with Google 
+                            </Button>
+                        </div>
                     </Form>
                     <div className="text-center pt-2">
                         <a href="/"> Haven't created an account yet? Sign up </a>
