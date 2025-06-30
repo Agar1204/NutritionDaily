@@ -1,15 +1,17 @@
 import React from "react"
 
 import { Form, Button, Card} from "react-bootstrap"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
+
 
 
 export default function Login(){
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const navigate = useNavigate()
+    const provider = new GoogleAuthProvider()
 
     function handleSignin(event){
         event.preventDefault()
@@ -22,6 +24,17 @@ export default function Login(){
             } else{
                 navigate("/home")
             }
+        })
+        .catch((error) => {
+            alert(error.message)
+        })
+    }
+
+    function handleGoogleSignin(event){
+        event.preventDefault()
+        signInWithPopup(auth, provider)
+        .then((result) =>  {
+            navigate("/home")
         })
         .catch((error) => {
             alert(error.message)
@@ -57,7 +70,7 @@ export default function Login(){
 
                         <div className="d-flex align-items-center">
                             <Button className="mt-3 btn btn-dark" type="submit"> Login</Button>
-                            <Button className="mt-3 ms-3 btn btn-dark"type="submit">
+                            <Button onClick={handleGoogleSignin} className="mt-3 ms-3 btn btn-dark"type="submit">
                                 <img 
                                    src="assets/google.png" 
                                    alt="Google logo" 
