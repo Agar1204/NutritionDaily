@@ -1,12 +1,34 @@
 import React from "react"
 
 import { Form, Button, Card} from "react-bootstrap"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../firebase"
+import { useNavigate } from "react-router-dom"
 
 
-export default function Signup(){
+export default function Login(){
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
+    const navigate = useNavigate()
 
+    function handleSignin(event){
+        event.preventDefault()
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const user = userCredential.user
+            if(!user.emailVerified){
+                alert("Please verify your email before logging in.")
+                auth.signOut()
+            } else{
+                navigate("/home")
+            }
+        })
+        .catch((error) => {
+            alert(error.message)
+        })
+    }
+
+    
     return (
         <>
         <div style={{backgroundColor: '#f8fff8'}} className="min-vh-100 d-flex align-items-center justify-content-center">
@@ -22,7 +44,7 @@ export default function Signup(){
                 </Card.Header>
                 <Card.Body className="border-0">
                     <h2 className="text-center"> Login</h2>
-                    <Form>
+                    <Form onSubmit={handleSignin}>
                         <Form.Group id="email" className="mt-2">
                             <Form.Label> Email</Form.Label>
                             <Form.Control placeholder="Enter email" type="email" required onChange={(event) => setEmail(event.target.value)} />
