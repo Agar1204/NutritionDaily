@@ -1,5 +1,8 @@
+import Header from "./Header"
 export default function Dashboard(){
     return(
-        <h1> This is the home page </h1>
+        <div style={{backgroundColor: '#f3fae3'}} className="min-vh-100">
+            <Header />
+        </div>
     )
 }

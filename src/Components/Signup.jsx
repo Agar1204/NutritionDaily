@@ -37,7 +37,7 @@ export default function Signup(){
 
     return (
         <>
-        <div style={{backgroundColor: '#f8fff8'}} className="min-vh-100 d-flex align-items-center justify-content-center">
+        <div style={{backgroundColor: '#f3fae3'}} className="min-vh-100 d-flex align-items-center justify-content-center">
             <Card style={{width: '400px', maxWidth: '90%'}}>
                 <Card.Header className="d-flex justify-content-center pb-2 bg-white border-0">
                     <img src= "/assets/icon.png"
