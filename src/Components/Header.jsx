@@ -1,4 +1,4 @@
-import { Navbar, Nav, NavDropdown, Form, Card, Button } from "react-bootstrap"
+import { Navbar, Nav, NavDropdown} from "react-bootstrap"
 export default function Header(){
     return(
         <>
@@ -22,14 +22,13 @@ export default function Header(){
             </Nav>
 
             <Nav>
-                <NavDropdown title="Profile">
+                <NavDropdown title="Profile" align="end">
                     <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
                     <NavDropdown.Item href="/login"> Log out </NavDropdown.Item>
                     <NavDropdown.Item href="/signup">Delete Account</NavDropdown.Item>
                 </NavDropdown>
             </Nav>
       </Navbar>
-      <div> Hello </div>
       </>
     );
 }
