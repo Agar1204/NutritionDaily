@@ -4,6 +4,7 @@ import Signup from "./Components/Signup"
 import Dashboard from "./Components/Dashboard"
 import Login from "./Components/Login"
 import ProtectedRoute from "./Components/ProtectedRoute"
+import About from "./Components/About"
 
 import { Navigate, Route, Routes } from "react-router-dom"
 
@@ -35,6 +36,7 @@ function App() {
           path="/home" 
           element = {<ProtectedRoute user={user} children={<Dashboard />} />}
         />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>
     </>

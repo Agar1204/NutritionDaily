@@ -27,6 +27,7 @@ export default function Header(){
             </Navbar.Brand>
 
             <Nav>
+                <Nav.Link href="/about" className="me-5"> About </Nav.Link>
                 <Nav.Link href="/home" className="me-5"> Dashboard </Nav.Link>
                 <Nav.Link href="/history" className="me-5"> History </Nav.Link>
                 <Nav.Link href="/goals" className="me-5"> Goals </Nav.Link>
