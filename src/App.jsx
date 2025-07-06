@@ -36,7 +36,7 @@ function App() {
           path="/home" 
           element = {<ProtectedRoute user={user} children={<Dashboard />} />}
         />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={ <ProtectedRoute user = {user} children={<About />} /> } />
         <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>
     </>
