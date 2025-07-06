@@ -5,8 +5,6 @@ import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from "
 import { auth } from "../firebase"
 import { useNavigate } from "react-router-dom"
 
-
-
 export default function Login(){
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")

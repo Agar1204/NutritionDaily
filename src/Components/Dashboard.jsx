@@ -14,7 +14,7 @@ export default function Dashboard(){
                     'x-app-id': import.meta.env.VITE_NUTRITIONIX_APP_ID,
                     'x-app-key': import.meta.env.VITE_NUTRITIONIX_API_KEY
                 }
-            }).then((resp) => resp.json()).then(data => setSearchResults(data["common"]))
+            }).then((resp) => resp.json()).then(data => setSearchResults(data["common"])).catch((error) => alert(error.message))
         }
     }, [search])
 
