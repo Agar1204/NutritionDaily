@@ -23,7 +23,6 @@ export default function Dashboard(){
 
     useEffect(() => {
         if(finalSearch != ""){
-            console.log(finalSearch)
             fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', {
                 method: 'POST',
                 headers: {
@@ -42,18 +41,26 @@ export default function Dashboard(){
         setSearch(event.target.value)
     }
 
-    function handleSuggestionClick(data){
-        setFinalSearch(data.food_name)
-        setSearch("")
+    function handleKeyDown(event){
+        if (event.key === 'Enter') {
+            event.preventDefault()
+            handleSubmit()
+        }
     }
 
-    function handleSubmit(event){
-        event.preventDefault()
-        const formData = new FormData(event.target)
-        const searchValue = formData.get('search')
+    function handleSuggestionClick(data){
         setSearch("")
+        setFinalSearch(data.food_name)
+    }
+
+    function handleSubmit(){
+        const searchValue = search
+        setSearch("")
+        setSearchResults([])
+
         setFinalSearch(searchValue)
     }
+
     return(
         <div style={{backgroundColor: '#f3fae3'}} className="min-vh-100">
             <Header />
@@ -75,6 +82,7 @@ export default function Dashboard(){
                                 placeholder="ex: 3 eggs" 
                                 value={search}
                                 onChange={handleChange}
+                                onKeyDown={handleKeyDown}
                             />
                             {search.length > 0 && (
                                 <ListGroup className="position-absolute w-100" style={{ top: '100%'}}>
@@ -87,8 +95,7 @@ export default function Dashboard(){
                                     {finalSearchResult.map((food) => (
                                         <ListGroup.Item
                                             key={food.ndb_no}
-                                            className="d-flex justify-content-between align-items-center"
-                                        >
+                                            className="d-flex justify-content-between align-items-center">
                                             <div>
                                                     <div className="fw-bold">{food.food_name}</div>
                                                     <small className="text-muted">
