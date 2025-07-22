@@ -2,7 +2,7 @@ import React from "react"
 
 import { Form, Button, Card} from "react-bootstrap"
 import { auth } from "../firebase"
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth"
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 
 
@@ -22,6 +22,7 @@ export default function Signup(){
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
+            updateProfile(user, {displayName: name})
             return sendEmailVerification(user)
         })
         .then(() =>{

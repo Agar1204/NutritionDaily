@@ -1,13 +1,19 @@
 import Header from "./Header"
+import DailyLog from "./DailyLog"
+import FoodItem from "./FoodItem"
 import { Card, Form, Row, Col, ListGroup, Badge, Button } from "react-bootstrap"
+
+import { auth } from "../firebase"
 
 import { useState, useEffect } from "react"
 export default function Dashboard(){
+    const user = auth.currentUser
     const [search, setSearch] = useState("")
     const [searchResults, setSearchResults] = useState([])
     
     const [finalSearch, setFinalSearch] = useState("")
     const [finalSearchResult, setFinalSearchResult] = useState([])
+    const [foodResult, setFoodResult] = useState([])
 
     useEffect(() => {
         if(search != ""){
@@ -61,13 +67,17 @@ export default function Dashboard(){
         setFinalSearch(searchValue)
     }
 
+    function addFood(){
+
+    }
+
     return(
         <div style={{backgroundColor: '#f3fae3'}} className="min-vh-100">
             <Header />
 
             <Card style={{backgroundColor: '#f3fae3'}} className="pt-5 d-flex justify-content-center align-items-center border-0 shadow-none">
                 <Card.Header className="text-center border-0 shadow-none" style={{backgroundColor: '#f3fae3'}}> 
-                    <h1>Welcome to NutritionDaily!</h1> 
+                    <h1>{`Welcome to NutritionDaily, ${user.displayName}!`}</h1> 
                 </Card.Header>
             </Card>
 
@@ -93,27 +103,7 @@ export default function Dashboard(){
                             {finalSearchResult.length > 0 && (
                                 <ListGroup className="mt-3">
                                     {finalSearchResult.map((food) => (
-                                        <ListGroup.Item
-                                            key={food.ndb_no}
-                                            className="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                    <div className="fw-bold">{food.food_name}</div>
-                                                    <small className="text-muted">
-                                                    {food.serving_qty} {food.serving_unit}
-                                                </small>
-                                            </div>
-                                            <Badge bg="success">
-                                                {Math.round(food.nf_calories)} kcal <br />
-                                                {Math.round(food.nf_total_fat)}g of fat <br />
-                                                {Math.round(food.nf_protein)}g of protein <br />
-                                                {Math.round(food.nf_total_carbohydrate)}g of carbohydrates
-                                            </Badge>
-
-                                            <Button 
-                                                variant="secondary" 
-                                                size="sm" 
-                                            > + </Button>
-                                        </ListGroup.Item>
+                                        <FoodItem key = {food.ndb_no} food = {food} onClick={addFood}/>
                                     ))}
                                 </ListGroup>
                             )}   
@@ -129,7 +119,7 @@ export default function Dashboard(){
 
             <Row>
                 <Col md={6}>
-                    <h1 className = "text-center"> Daily Log</h1>
+                    <DailyLog />
                 </Col>
                 <Col md={6}>
                     <h1 className="text-center"> Today's Summary </h1>
