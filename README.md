@@ -1,4 +1,4 @@
-# Personal Nutrition App
+# NutritionDaily
 
 A React-based nutrition tracking app for monitoring daily food intake and nutritional data. 
 

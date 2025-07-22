@@ -4,8 +4,10 @@ import FoodItem from "./FoodItem"
 import { Card, Form, Row, Col, ListGroup, Badge, Button } from "react-bootstrap"
 
 import { auth } from "../firebase"
+import { collection, addDoc } from "firebase/firestore"
 
 import { useState, useEffect } from "react"
+
 export default function Dashboard(){
     const user = auth.currentUser
     const [search, setSearch] = useState("")
@@ -13,7 +15,6 @@ export default function Dashboard(){
     
     const [finalSearch, setFinalSearch] = useState("")
     const [finalSearchResult, setFinalSearchResult] = useState([])
-    const [foodResult, setFoodResult] = useState([])
 
     useEffect(() => {
         if(search != ""){
