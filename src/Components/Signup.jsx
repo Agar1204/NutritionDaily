@@ -1,8 +1,9 @@
 import React from "react"
 
 import { Form, Button, Card} from "react-bootstrap"
-import { auth } from "../firebase"
+import { auth, db } from "../firebase"
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
 import { useNavigate } from "react-router-dom"
 
 
@@ -13,7 +14,7 @@ export default function Signup(){
     const [passwordConfirmation, setPasswordConfirmation] = React.useState("")
     const navigate = useNavigate()
 
-    function handleSignup(event){
+    async function handleSignup(event){
         event.preventDefault()
         if(password != passwordConfirmation){
             alert("Passwords do not match.");
@@ -21,9 +22,17 @@ export default function Signup(){
         }
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+            const date = new Date();
+            const usFormattedDate = date.toLocaleDateString('en-US');       
             const user = userCredential.user;
             updateProfile(user, {displayName: name})
-            return sendEmailVerification(user)
+            setDoc(doc(db, "users", user.uid), {
+                name: name,
+                email: email,
+                createdAt: usFormattedDate
+              }).then(() => {
+                return sendEmailVerification(user)
+              })
         })
         .then(() =>{
             alert("Account created! Please check your inbox to verify your email.")
