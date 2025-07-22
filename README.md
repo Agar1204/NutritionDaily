@@ -1,29 +1,37 @@
 # Personal Nutrition App
 
-A React-based nutrition tracking app for monitoring daily food intake and nutritional goals.
+A React-based nutrition tracking app for monitoring daily food intake and nutritional data.
 
 ## What it does
 
-Currently tracks daily food intake with nutrition data. Users can log in and search for foods, add them to their daily log, and view calculated daily summary totals for calories, protein, carbs, and fats.
+Users can create accounts and log in to track their daily food intake with nutrition data. They can search for foods from a comprehensive database, log them to their daily diary, and view calculated daily summary totals for calories, protein, carbs, and fats. The app provides a simple, clean interface for understanding your daily nutritional intake.
+
+## Key Features
+
+- **User authentication** with secure account creation and login
+- **Food search** via Nutritionix API with comprehensive database
+- **Daily logging** with portion tracking
+- **Real-time calculations** showing daily summary totals
+- **Nutrient tracking** for calories, protein, carbs, and fats
+- **Data persistence** with Firebase Firestore
 
 ## Tech Stack
 
 - **React** with Vite
 - **Firebase** (Auth + Firestore)
 - **Nutritionix API** for food data
+- **React Context** for state management
 
 ## Current Status
 
 ✅ **Phase 1 Complete (MVP)**
-- User authentication
-- Food search via Nutritionix API
-- Daily food logging with calculated summary totals
-- Basic nutrient totals
+- User authentication system
+- Food search and database integration
+- Daily food logging with portions
+- Real-time nutrient calculations
 
 🚧 **Coming Next**
-- Goal setting and progress tracking
-- Historical data view
-- Better UI/UX (Phase 2)
+- Goal setting and progress tracking (Phase 2)
 - Recipe builder and meal suggestions (Phase 3)
 
 ## Setup
