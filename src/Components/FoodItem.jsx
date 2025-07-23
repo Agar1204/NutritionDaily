@@ -1,36 +1,36 @@
 import { ListGroup, Badge, Button } from "react-bootstrap"
 
-export default function FoodItem({food, onClick, showAddButton = true}) {
+export default function FoodItem(props) {
     return (
         <ListGroup.Item className="d-flex justify-content-between align-items-center">
             <div>
-                <div className="fw-bold">{food.food_name}</div>
+                <div className="fw-bold">{props.food_name}</div>
                 <small className="text-muted">
-                    {food.serving_qty} {food.serving_unit}
+                    {props.serving_qty} {props.unit}
                 </small>
             </div>
             <Badge bg="success">
-                {Math.round(food.nf_calories)} kcal <br />
-                {Math.round(food.nf_total_fat)}g of fat <br />
-                {Math.round(food.nf_protein)}g of protein <br />
-                {Math.round(food.nf_total_carbohydrate)}g of carbohydrates
+                {Math.round(props.cals)} kcal <br />
+                {Math.round(props.fat)}g of fat <br />
+                {Math.round(props.protein)}g of protein <br />
+                {Math.round(props.carbs)}g of carbohydrates
             </Badge>
             
-            {showAddButton && (
+            {props.showAddButton && (
                 <Button 
                     variant= "secondary"
                     size="sm"
-                    onClick={() => onClick(food)} 
+                    onClick={() => props.onClick(props.food)} 
                 >
                     +
                 </Button>
             )}
 
-            {!showAddButton && (
+            {!props.showAddButton && (
                 <Button
                     variant= "secondary"
                     size="sm"
-                    onClick={() => onClick(food) }
+                    onClick={() => props.onClick(props.food) }
                 >
                     x
                 </Button> 

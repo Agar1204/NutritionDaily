@@ -1,10 +1,10 @@
 import Header from "./Header"
 import DailyLog from "./DailyLog"
 import FoodItem from "./FoodItem"
-import { Card, Form, Row, Col, ListGroup, Badge, Button } from "react-bootstrap"
+import { Card, Form, Row, Col, ListGroup} from "react-bootstrap"
 
-import { auth } from "../firebase"
-import { collection, addDoc } from "firebase/firestore"
+import { auth, db } from "../firebase"
+import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore"
 
 import { useState, useEffect } from "react"
 
@@ -15,6 +15,31 @@ export default function Dashboard(){
     
     const [finalSearch, setFinalSearch] = useState("")
     const [finalSearchResult, setFinalSearchResult] = useState([])
+
+    const [todayFoods, setTodayFoods] = useState([])
+
+    const date = new Date()
+    const currentDate = date.toLocaleDateString('sv-SE'); 
+
+    useEffect(() => {
+        const getFoods = async () => {
+            try {
+                const dailyLogRef = doc(db, "users", user.uid, "dailyLogs", currentDate)
+                const docSnap = await getDoc(dailyLogRef)  
+                if (docSnap.exists()) {
+                    const foodsToday = docSnap.data().foods || []
+                    setTodayFoods(foodsToday)
+                } else {
+                    setTodayFoods([])
+                }
+            } catch (error) {
+                alert(error.message)
+                setTodayFoods([])
+            }
+        };
+        
+        getFoods();
+    }, [currentDate, user.uid])
 
     useEffect(() => {
         if(search != ""){
@@ -68,8 +93,32 @@ export default function Dashboard(){
         setFinalSearch(searchValue)
     }
 
-    function addFood(){
+    async function addFood(food){
+        const date = new Date()
+        const currentDate = date.toLocaleDateString('sv-SE'); 
 
+        const dailyLogRef = doc(db, "users", user.uid, "dailyLogs", currentDate)
+        const newFood = {
+            key: food.ndb_no,
+            food_name: food.food_name,
+            serving_qty: food.serving_qty,
+            serving_units: food.serving_unit,
+            calories: food.nf_calories,
+            fat: food.nf_total_fat,
+            protein: food.nf_protein,
+            carbs: food.nf_total_carbohydrate
+        }
+        try{
+            await setDoc(dailyLogRef, {
+                foods: arrayUnion(newFood) 
+            }, {merge: true}) //adds newFood to list of foods if one exists
+            const docSnap = await getDoc(dailyLogRef)
+            const foodsToday = docSnap.data().foods
+            setTodayFoods(foodsToday)
+            setFinalSearchResult([])
+        } catch(error){
+            alert(error.message)
+        }
     }
 
     return(
@@ -104,7 +153,17 @@ export default function Dashboard(){
                             {finalSearchResult.length > 0 && (
                                 <ListGroup className="mt-3">
                                     {finalSearchResult.map((food) => (
-                                        <FoodItem key = {food.ndb_no} food = {food} onClick={addFood}/>
+                                        <FoodItem key = {food.ndb_no} 
+                                                  food = {food}
+                                                  food_name = {food.food_name}
+                                                  serving_qty = {food.serving_qty}
+                                                  unit = {food.serving_unit}
+                                                  cals = {food.nf_calories}
+                                                  fat = {food.nf_total_fat}
+                                                  protein = {food.nf_protein}
+                                                  carbs = {food.nf_total_carbohydrate} 
+                                                  showAddButton = {true}
+                                                  onClick={() => addFood(food)}/>
                                     ))}
                                 </ListGroup>
                             )}   
@@ -120,7 +179,7 @@ export default function Dashboard(){
 
             <Row>
                 <Col md={6}>
-                    <DailyLog />
+                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods}/>
                 </Col>
                 <Col md={6}>
                     <h1 className="text-center"> Today's Summary </h1>
