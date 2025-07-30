@@ -98,12 +98,6 @@ export default function Dashboard(){
         }
     }, [finalSearch])
 
-    // Calculates the total calories, carbs, proteins, and fats the user has consumed today 
-    function calculateTotal(){
-        totals = []
-
-    }
-
     // Sets search value to value in search bar everytime it changes
     function handleChange(event){
         setSearch(event.target.value)
@@ -199,7 +193,7 @@ export default function Dashboard(){
                                         <ListGroup.Item key={index} action onClick={() => handleSuggestionClick(data)}> {data.food_name} </ListGroup.Item>))}
                                 </ListGroup>)}
 
-                            {finalSearchResult.length > 0 && (
+                            {finalSearchResult && (
                                 <ListGroup className="mt-3">
                                     {finalSearchResult.map((food) => (
                                         <FoodItem key = {food.ndb_no} 
