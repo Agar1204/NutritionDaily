@@ -1,6 +1,7 @@
 import Header from "./Header"
 import DailyLog from "./DailyLog"
 import FoodItem from "./FoodItem"
+import DailySummary from "./DailySummary"
 import { Card, Form, Row, Col, ListGroup} from "react-bootstrap"
 
 import { auth, db } from "../firebase"
@@ -10,17 +11,30 @@ import { useState, useEffect } from "react"
 
 export default function Dashboard(){
     const user = auth.currentUser
+
+    // Value of input in search bar and results from autocomplete endpoint
     const [search, setSearch] = useState("")
     const [searchResults, setSearchResults] = useState([])
     
+    // Value of search bar when submitted and result returned from NLP endpoint
     const [finalSearch, setFinalSearch] = useState("")
     const [finalSearchResult, setFinalSearchResult] = useState([])
 
+    // Foods the user has logged today
     const [todayFoods, setTodayFoods] = useState([])
 
+    const [todaySummary, setTodaySummary] = useState({
+        "Calories": 0,
+        "Fat": 0,
+        "Protein":0,
+        "Carbs": 0
+    })
+
+    // Today's date (format: YYYY-MM-DD)
     const date = new Date()
     const currentDate = date.toLocaleDateString('sv-SE'); 
 
+    // Initialize logged in user's logged food from today
     useEffect(() => {
         const getFoods = async () => {
             try {
@@ -41,6 +55,20 @@ export default function Dashboard(){
         getFoods();
     }, [currentDate, user.uid])
 
+    // Updates user's daily summary whenever their food list is updated
+    useEffect(() => {
+        const safeNumber = (value) => Number(value) || 0 //removing NaN
+        const newSummary = todayFoods.reduce((acc, current) => ({
+            "Calories": acc.Calories + safeNumber(current.calories),
+            "Fat": acc.Fat + safeNumber(current.fat), 
+            "Protein": acc.Protein + safeNumber(current.protein),
+            "Carbs": acc.Carbs + safeNumber(current.carbs)
+
+        }), {"Calories": 0, "Fat": 0, "Protein": 0, "Carbs": 0})
+        setTodaySummary(newSummary)
+    }, [todayFoods])
+
+    // Fetches from Nutritionix API's standard endpoint (for autocomplete search)
     useEffect(() => {
         if(search != ""){
             fetch(`https://trackapi.nutritionix.com/v2/search/instant?query=${search}` , {
@@ -53,6 +81,7 @@ export default function Dashboard(){
         }
     }, [search])
 
+    // Fetches from Nutritionix API's natural endpoint (for final result after user submits from search bar)
     useEffect(() => {
         if(finalSearch != ""){
             fetch('https://trackapi.nutritionix.com/v2/natural/nutrients', {
@@ -69,10 +98,18 @@ export default function Dashboard(){
         }
     }, [finalSearch])
 
+    // Calculates the total calories, carbs, proteins, and fats the user has consumed today 
+    function calculateTotal(){
+        totals = []
+
+    }
+
+    // Sets search value to value in search bar everytime it changes
     function handleChange(event){
         setSearch(event.target.value)
     }
 
+    // Checks if user clicked the enter key when typing in search bar, an alternate way to submit 
     function handleKeyDown(event){
         if (event.key === 'Enter') {
             event.preventDefault()
@@ -80,11 +117,13 @@ export default function Dashboard(){
         }
     }
 
+    // Submission from one of the suggested foods from autocomplete 
     function handleSuggestionClick(data){
         setSearch("")
         setFinalSearch(data.food_name)
     }
 
+    // Submission from clicking enter 
     function handleSubmit(){
         const searchValue = search
         setSearch("")
@@ -93,6 +132,7 @@ export default function Dashboard(){
         setFinalSearch(searchValue)
     }
 
+    // Adds food to Firestore subcollection in the user's today's log 
     async function addFood(food){
         const date = new Date()
         const currentDate = date.toLocaleDateString('sv-SE'); 
@@ -115,6 +155,15 @@ export default function Dashboard(){
             const docSnap = await getDoc(dailyLogRef)
             const foodsToday = docSnap.data().foods
             setTodayFoods(foodsToday)
+            const newSummary = {
+                "Calories": todaySummary.Calories + food.nf_calories,
+                "Fat": todaySummary.Fat + food.nf_total_fat,
+                "Protein": todaySummary.Protein + food.nf_protein,
+                "Carbs": todaySummary.Carbs + food.nf_total_carbohydrate
+            }
+            setTodaySummary(newSummary)
+
+            console.log(newSummary)
             setFinalSearchResult([])
         } catch(error){
             alert(error.message)
@@ -179,10 +228,10 @@ export default function Dashboard(){
 
             <Row>
                 <Col md={6}>
-                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods}/>
+                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods} todaySummary={todaySummary} setTodaySummary={setTodaySummary}/>
                 </Col>
                 <Col md={6}>
-                    <h1 className="text-center"> Today's Summary </h1>
+                    <h1 className="text-center"> <DailySummary summary={todaySummary}/> </h1>
                 </Col>
             </Row>
         </div>

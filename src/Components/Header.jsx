@@ -1,12 +1,9 @@
 import { Navbar, Nav, NavDropdown, Alert} from "react-bootstrap"
 import { auth} from "../firebase"
 import { signOut } from "firebase/auth"
-import { useNavigate } from "react-router-dom"
 
 
 export default function Header(){
-    const navigate = useNavigate()
-
     function handleLogOut(){
         signOut(auth).then(() => {})
         .catch((error) => {

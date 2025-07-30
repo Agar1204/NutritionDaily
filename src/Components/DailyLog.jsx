@@ -4,7 +4,7 @@ import { ListGroup } from "react-bootstrap"
 import { useState } from "react"
 
 import { auth, db } from "../firebase"
-import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
 
 
 export default function DailyLog({foodList, setTodayFoods}){
@@ -35,18 +35,20 @@ export default function DailyLog({foodList, setTodayFoods}){
             <h1 className="text-center">Daily Log</h1>
             {foodList && 
                 <ListGroup className="mt-3">
-                    {foodList.map((food) => (
-                        <FoodItem key = {food.key}
-                                  food_name = {food.food_name}
-                                  serving_qty = {food.serving_qty}
-                                  unit = {food.serving_units} 
-                                  cals = {food.calories}
-                                  fat = {food.fat}
-                                  protein = {food.protein}
-                                  carbs = {food.carbs}
-                                  onClick = { () => removeFood(food.key)}
-                                  showAddButton={false}/>
-                    ))}      
+                        {foodList.map((food) => (
+                            <div className = "mb-1">
+                                <FoodItem key = {food.key}
+                                        food_name = {food.food_name}
+                                        serving_qty = {food.serving_qty}
+                                        unit = {food.serving_units} 
+                                        cals = {food.calories}
+                                        fat = {food.fat}
+                                        protein = {food.protein}
+                                        carbs = {food.carbs}
+                                        onClick = { () => removeFood(food.key)}
+                                        showAddButton={false}/>
+                            </div>
+                        ))}    
                 </ListGroup>
             }
         </>
