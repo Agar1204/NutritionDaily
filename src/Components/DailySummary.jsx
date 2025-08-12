@@ -13,25 +13,25 @@ export default function DailySummary(props){
                     <span>Calories</span>
                     <span>{Math.round(props.summary.Calories)}kcal</span>
                 </div>
-                <ProgressBar now={props.summary.Calories} max={2000} />
+                <ProgressBar now={props.summary.Calories} max={props.goals.Calories} />
 
                 <div className="d-flex justify-content-between mb-1">
                     <span>Fat</span>
                     <span>{Math.round(props.summary.Fat)}g</span>
                 </div>
-                <ProgressBar now={props.summary.Fat} max={60} />
+                <ProgressBar now={props.summary.Fat} max={props.goals.Fats} />
 
                 <div className="d-flex justify-content-between mb-1">
                     <span>Protein</span>
                     <span>{Math.round(props.summary.Protein)}g</span>
                 </div>
-                <ProgressBar now={props.summary.Protein} max={50} />
+                <ProgressBar now={props.summary.Protein} max={props.goals.Protein} />
 
                 <div className="d-flex justify-content-between mb-1">
                     <span>Carbs</span>
                     <span>{Math.round(props.summary.Carbs)}g</span>
                 </div>
-                <ProgressBar now={props.summary.Carbs} max={200} />
+                <ProgressBar now={props.summary.Carbs} max={props.goals.Carbs} />
             </Card.Body>
         </Card>
     )

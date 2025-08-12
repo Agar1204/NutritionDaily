@@ -29,7 +29,8 @@ export default function Signup(){
             setDoc(doc(db, "users", user.uid), {
                 name: name,
                 email: email,
-                createdAt: usFormattedDate
+                createdAt: usFormattedDate,
+                goals: {"Calories": 2000, "Fats": 60, "Protein": 50, "Carbs": 200}
               }).then(() => {
                 return sendEmailVerification(user)
               })

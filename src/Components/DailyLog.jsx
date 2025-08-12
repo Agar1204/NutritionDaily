@@ -32,7 +32,9 @@ export default function DailyLog({foodList, setTodayFoods}){
     }
     return(
         <>
-            <h1 className="text-center">Daily Log</h1>
+            <h1 className="text-center mb-5">Daily Log</h1>
+            {foodList.length === 0 && 
+                <h3 className="text-center"> No foods added yet. Add one above! </h3>}
             {foodList && 
                 <ListGroup className="mt-3">
                         {foodList.map((food) => (

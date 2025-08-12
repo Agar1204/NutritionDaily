@@ -30,6 +30,8 @@ export default function Dashboard(){
         "Carbs": 0
     })
 
+    const [currentGoals, setCurrentGoals] = useState({})
+
     // Today's date (format: YYYY-MM-DD)
     const date = new Date()
     const currentDate = date.toLocaleDateString('sv-SE'); 
@@ -39,9 +41,12 @@ export default function Dashboard(){
         const getFoods = async () => {
             try {
                 const dailyLogRef = doc(db, "users", user.uid, "dailyLogs", currentDate)
+                const goalsRef = doc(db, "users", user.uid)
                 const docSnap = await getDoc(dailyLogRef)  
+                const goalsSnap = await getDoc(goalsRef)
                 if (docSnap.exists()) {
                     const foodsToday = docSnap.data().foods || []
+                    setCurrentGoals(goalsSnap.data().goals)
                     setTodayFoods(foodsToday)
                 } else {
                     setTodayFoods([])
@@ -149,15 +154,6 @@ export default function Dashboard(){
             const docSnap = await getDoc(dailyLogRef)
             const foodsToday = docSnap.data().foods
             setTodayFoods(foodsToday)
-            const newSummary = {
-                "Calories": todaySummary.Calories + food.nf_calories,
-                "Fat": todaySummary.Fat + food.nf_total_fat,
-                "Protein": todaySummary.Protein + food.nf_protein,
-                "Carbs": todaySummary.Carbs + food.nf_total_carbohydrate
-            }
-            setTodaySummary(newSummary)
-
-            console.log(newSummary)
             setFinalSearchResult([])
         } catch(error){
             alert(error.message)
@@ -222,10 +218,10 @@ export default function Dashboard(){
 
             <Row>
                 <Col md={6}>
-                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods} todaySummary={todaySummary} setTodaySummary={setTodaySummary}/>
+                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods}/>
                 </Col>
                 <Col md={6}>
-                    <h1 className="text-center"> <DailySummary summary={todaySummary}/> </h1>
+                    <h1 className="text-center"> <DailySummary summary={todaySummary} goals={currentGoals}/> </h1>
                 </Col>
             </Row>
         </div>
