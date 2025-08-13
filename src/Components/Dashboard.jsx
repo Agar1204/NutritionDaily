@@ -135,7 +135,7 @@ export default function Dashboard(){
     async function addFood(food){
         const date = new Date()
         const currentDate = date.toLocaleDateString('sv-SE'); 
-
+        
         const dailyLogRef = doc(db, "users", user.uid, "dailyLogs", currentDate)
         const newFood = {
             key: food.ndb_no,
