@@ -8,6 +8,7 @@ import { auth, db } from "../firebase"
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore"
 
 import { useState, useEffect } from "react"
+import { userStore } from "../store/userProfileStore"
 
 export default function Dashboard(){
     const user = auth.currentUser
@@ -29,8 +30,8 @@ export default function Dashboard(){
         "Protein":0,
         "Carbs": 0
     })
-
-    const [currentGoals, setCurrentGoals] = useState({})
+    
+    const setCurrentGoals = userStore((state) => state.setGoals)
 
     // Today's date (format: YYYY-MM-DD)
     const date = new Date()
@@ -135,7 +136,7 @@ export default function Dashboard(){
     async function addFood(food){
         const date = new Date()
         const currentDate = date.toLocaleDateString('sv-SE'); 
-        
+
         const dailyLogRef = doc(db, "users", user.uid, "dailyLogs", currentDate)
         const newFood = {
             key: food.ndb_no,
@@ -221,7 +222,7 @@ export default function Dashboard(){
                     <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods}/>
                 </Col>
                 <Col md={6}>
-                    <h1 className="text-center"> <DailySummary summary={todaySummary} goals={currentGoals}/> </h1>
+                    <h1 className="text-center"> <DailySummary summary={todaySummary}/> </h1>
                 </Col>
             </Row>
         </div>

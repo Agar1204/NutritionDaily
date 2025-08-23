@@ -12,15 +12,24 @@ import { Navigate, Route, Routes } from "react-router-dom"
 
 import { auth } from "./firebase"
 import { onAuthStateChanged } from "firebase/auth"
+import { userStore } from "./store/userProfileStore"
 
 function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true) 
 
+  const fetchUserStore = userStore((state) => state.setUserProfile)
+
   useEffect(()=> {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user)
       setLoading(false)
+
+      if(user){
+        fetchUserStore(user.uid)
+      } else {
+        fetchUserStore(null)
+      }
     })
     return unsubscribe
   }, [])

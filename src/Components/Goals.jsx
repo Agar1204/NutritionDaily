@@ -1,17 +1,18 @@
-import { Form, Button, Card, Row, Col, ListGroup, Badge} from "react-bootstrap"
+import { Form, Button, Card, Row, Col, ListGroup} from "react-bootstrap"
 import Header from "./Header"
 import { useState, useEffect } from "react"
 import { auth, db } from "../firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
+import { userStore } from "../store/userProfileStore"
 
 export default function Goals(){
-    const [goals, setGoals] = useState({})
+    const goals = userStore((state) => state.goals)
+    const setGoals = userStore((state) => state.setGoals)
     const [calories, setCalories] = useState(0)
     const [fats, setFats] = useState(0)
     const [proteins, setProteins] = useState(0)
     const [carbs, setCarbs] = useState(0)
     const user = auth.currentUser
-    const submit = false
 
     useEffect(() => {
         const getGoals = async() => {
