@@ -7,7 +7,7 @@ export default function DailySummary(props){
     return(
             <Card style={{backgroundColor: '#ffffff'}} className="border-0">
                 <Card.Header style={{backgroundColor: '#ffffff'}} className="d-flex justify-content-center pb-2 border-0">
-                    Today's Summary 
+                    Summary 
                 </Card.Header>
                         
                 <Card.Body>

@@ -7,6 +7,7 @@ import ProtectedRoute from "./Components/ProtectedRoute"
 import About from "./Components/About"
 import DeleteUser from "./Components/DeleteUser"
 import Goals from "./Components/Goals"
+import History from "./Components/History"
 
 import { Navigate, Route, Routes } from "react-router-dom"
 
@@ -50,6 +51,7 @@ function App() {
         <Route path="/about" element={ <ProtectedRoute user = {user} children={<About />} /> } />
         <Route path="/deleteAccount" element={ <ProtectedRoute user = {user} children={<DeleteUser />} /> } />
         <Route path="/goals" element={<ProtectedRoute user={user} children={<Goals />} />} />
+        <Route path="/history" element={<ProtectedRoute user={user} children={<History />} />} />
         <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>
     </>

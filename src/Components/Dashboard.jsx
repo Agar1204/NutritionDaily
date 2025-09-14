@@ -30,7 +30,7 @@ export default function Dashboard(){
         "Protein":0,
         "Carbs": 0
     })
-    
+
     const setCurrentGoals = userStore((state) => state.setGoals)
 
     // Today's date (format: YYYY-MM-DD)
@@ -203,7 +203,8 @@ export default function Dashboard(){
                                                   protein = {food.nf_protein}
                                                   carbs = {food.nf_total_carbohydrate} 
                                                   showAddButton = {true}
-                                                  onClick={() => addFood(food)}/>
+                                                  onClick={() => addFood(food)}
+                                                  updateable={true}/>
                                     ))}
                                 </ListGroup>
                             )}   
@@ -219,7 +220,7 @@ export default function Dashboard(){
 
             <Row>
                 <Col md={6}>
-                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods}/>
+                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods} updateable={true}/>
                 </Col>
                 <Col md={6}>
                     <h1 className="text-center"> <DailySummary summary={todaySummary}/> </h1>

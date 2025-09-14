@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const userStore = create((set, get) => ({
     name: null,
-    goals: {Calories: 0, protein: 0, carbs: 0, fats: 0 },
+    goals: {Calories: 0, protein: 0, carbs: 0, fats: 0},
     isLoading: true,
     id: null,
 
@@ -13,7 +13,6 @@ export const userStore = create((set, get) => ({
             return set({name:null, goals: {Calories: 0, protein: 0, carbs: 0, fats: 0 }, isLoading:false, id:null})
         } 
 
-        set({isLoading: true})
         try {
             const docRef = doc(db, "users", userId)
             const docSnap = await getDoc(docRef)

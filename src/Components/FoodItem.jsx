@@ -15,7 +15,7 @@ export default function FoodItem(props) {
                 {Math.round(props.protein)}g of protein <br />
                 {Math.round(props.carbs)}g of carbohydrates
             </Badge>
-            {props.showAddButton && (
+            {props.showAddButton && props.updateable && (
                 <Button 
                     variant= "secondary"
                     size="sm"
@@ -25,7 +25,7 @@ export default function FoodItem(props) {
                 </Button>
             )}
 
-            {!props.showAddButton && (
+            {!props.showAddButton && props.updateable && (
                 <Button
                     variant= "secondary"
                     size="sm"

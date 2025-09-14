@@ -7,7 +7,7 @@ import { auth, db } from "../firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 
 
-export default function DailyLog({foodList, setTodayFoods}){
+export default function DailyLog({foodList, setTodayFoods, updateable}){
     const user = auth.currentUser
     const date = new Date()
     const todaysDate = date.toLocaleDateString('sv-SE')
@@ -33,9 +33,12 @@ export default function DailyLog({foodList, setTodayFoods}){
     return(
         <>
             <h1 className="text-center mb-5">Daily Log</h1>
-            {foodList.length === 0 && 
+            {foodList.length === 0 && updateable &&
                 <h3 className="text-center"> No foods added yet. Add one above! </h3>}
-            {foodList && 
+            
+            {foodList.length === 0 && !updateable &&
+                <h3 className="text-center"> No foods were logged that day.</h3>}
+            {foodList &&
                 <ListGroup className="mt-3">
                         {foodList.map((food) => (
                             <div className = "mb-1">
@@ -48,7 +51,8 @@ export default function DailyLog({foodList, setTodayFoods}){
                                         protein = {food.protein}
                                         carbs = {food.carbs}
                                         onClick = { () => removeFood(food.key)}
-                                        showAddButton={false}/>
+                                        showAddButton={false}
+                                        updateable={updateable}/>
                             </div>
                         ))}    
                 </ListGroup>
