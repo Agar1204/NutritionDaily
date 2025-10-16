@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react" 
+import Spinner from "react-bootstrap/Spinner"
 
 import Signup from "./Components/Signup"
 import Dashboard from "./Components/Dashboard"
@@ -36,7 +37,7 @@ function App() {
   }, [])
 
   if (loading){
-    return <div> Authenticating user... </div>
+    return <div> Authenticating user... <Spinner animation="border"/></div>
   }
 
   return (

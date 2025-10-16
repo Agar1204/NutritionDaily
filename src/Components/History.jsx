@@ -64,7 +64,8 @@ export default function History(){
                 <DatePicker 
                     selected={currentDate} 
                     onChange={(date) => setCurrentDate(date)} 
-                    inline/>
+                    inline
+                    className="me-5"/>
                 <Row>
                     <Col md={6}>
                         <DailyLog foodList={foodList} setTodayFoods={setFoodList} updateable={false} />

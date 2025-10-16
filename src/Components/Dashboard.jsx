@@ -10,6 +10,8 @@ import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore"
 import { useState, useEffect } from "react"
 import { userStore } from "../store/userProfileStore"
 
+import { Doughnut } from 'react-chartjs-2';
+
 export default function Dashboard(){
     const user = auth.currentUser
 
@@ -36,6 +38,41 @@ export default function Dashboard(){
     // Today's date (format: YYYY-MM-DD)
     const date = new Date()
     const currentDate = date.toLocaleDateString('sv-SE'); 
+
+    let chartData;
+
+    if (todaySummary.Calories == 0){
+        chartData = {
+            labels: ['No calories eaten yet.'],
+            datasets: [{
+                label: "Proportion of Calories",
+                data: [1],
+                backgroundColor: ['#E0E0E0']
+            }]
+        }
+
+    } else {
+        chartData = {
+            labels: ['Protein', 'Fat', 'Carbs'],
+            datasets: [{
+                label: "Proportion of Calories",
+                data: [todaySummary.Protein * 4 / todaySummary.Calories, 
+                       todaySummary.Fat * 9 / todaySummary.Calories,
+                       todaySummary.Carbs * 4 / todaySummary.Calories
+                ],
+                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+            }]
+        }
+    }
+
+    const chartOptions = {
+        plugins: {
+            title: {
+                display: true,
+                text: "Proportion of Calories per Nutrient"
+            }
+        }
+    }
 
     // Initialize logged in user's logged food from today
     useEffect(() => {
@@ -226,6 +263,7 @@ export default function Dashboard(){
                     <h1 className="text-center"> <DailySummary summary={todaySummary}/> </h1>
                 </Col>
             </Row>
+            <div style={{width:"500px"}} className="mx-auto"> <Doughnut data={chartData} options={chartOptions}/></div>
         </div>
     )
 }

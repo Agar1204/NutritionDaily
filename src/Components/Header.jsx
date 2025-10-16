@@ -30,7 +30,8 @@ export default function Header(){
                 <Nav.Link href="/home" className="me-5"> Dashboard </Nav.Link>
                 <Nav.Link href="/history" className="me-5"> History </Nav.Link>
                 <Nav.Link href="/goals" className="me-5"> Goals </Nav.Link>
-                <Nav.Link href="/meals" className="me-5"> Meals </Nav.Link>
+                <Nav.Link href="/meals" className="me-5"> Recipes </Nav.Link>
+                <Nav.Link href="/recommendations" className="me-5"> Recommendations </Nav.Link>
             </Nav>
 
             <Nav>
