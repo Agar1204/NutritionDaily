@@ -34,6 +34,12 @@ export default function FoodItem(props) {
                     x
                 </Button> 
             )}
+
+            {props.showSaveButton && (
+                <Button variant= "secondary" size="sm" onClick={() => props.saveFood(props.food) } >
+                    ♡
+                </Button>
+            )}
         </ListGroup.Item>
     )
 }

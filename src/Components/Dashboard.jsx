@@ -8,9 +8,11 @@ import { auth, db } from "../firebase"
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore"
 
 import { useState, useEffect } from "react"
-import { userStore } from "../store/userProfileStore"
 
+import { Chart as ChartJS, ArcElement} from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement)
 
 export default function Dashboard(){
     const user = auth.currentUser
@@ -33,7 +35,7 @@ export default function Dashboard(){
         "Carbs": 0
     })
 
-    const setCurrentGoals = userStore((state) => state.setGoals)
+    const [currentGoals, setCurrentGoals] = useState({})
 
     // Today's date (format: YYYY-MM-DD)
     const date = new Date()
@@ -74,7 +76,7 @@ export default function Dashboard(){
         }
     }
 
-    // Initialize logged in user's logged food from today
+    // Initialize logged in user's information (today's food, goals)
     useEffect(() => {
         const getFoods = async () => {
             try {
@@ -169,6 +171,15 @@ export default function Dashboard(){
         setFinalSearch(searchValue)
     }
 
+    async function saveFood(food){
+        try{
+            await setDoc(doc(db, 'users', user.uid, 'savedFoods', String(food.key)), food);
+            console.log("food added!")
+        } catch(error){
+            alert(error.message)
+        }
+    }
+
     // Adds food to Firestore subcollection in the user's today's log 
     async function addFood(food){
         const date = new Date()
@@ -240,7 +251,9 @@ export default function Dashboard(){
                                                   protein = {food.nf_protein}
                                                   carbs = {food.nf_total_carbohydrate} 
                                                   showAddButton = {true}
+                                                  showSaveButton = {true}
                                                   onClick={() => addFood(food)}
+                                                  saveFood={() => saveFood(food)}
                                                   updateable={true}/>
                                     ))}
                                 </ListGroup>
@@ -257,10 +270,10 @@ export default function Dashboard(){
 
             <Row>
                 <Col md={6}>
-                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods} updateable={true}/>
+                    <DailyLog foodList = {todayFoods} setTodayFoods={setTodayFoods} updateable={true} saveFood={saveFood}/>
                 </Col>
                 <Col md={6}>
-                    <h1 className="text-center"> <DailySummary summary={todaySummary}/> </h1>
+                    <h1 className="text-center"> <DailySummary summary={todaySummary} goals = {currentGoals}/> </h1>
                 </Col>
             </Row>
             <div style={{width:"500px"}} className="mx-auto"> <Doughnut data={chartData} options={chartOptions}/></div>

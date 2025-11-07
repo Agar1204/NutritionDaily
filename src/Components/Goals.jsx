@@ -3,11 +3,9 @@ import Header from "./Header"
 import { useState, useEffect } from "react"
 import { auth, db } from "../firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
-import { userStore } from "../store/userProfileStore"
 
 export default function Goals(){
-    const goals = userStore((state) => state.goals)
-    const setGoals = userStore((state) => state.setGoals)
+    const [goals, setGoals] = useState({})
     const [calories, setCalories] = useState(0)
     const [fats, setFats] = useState(0)
     const [proteins, setProteins] = useState(0)

@@ -7,7 +7,7 @@ import { auth, db } from "../firebase"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 
 
-export default function DailyLog({foodList, setTodayFoods, updateable}){
+export default function DailyLog({foodList, setTodayFoods, updateable, saveFood}){
     const user = auth.currentUser
     const date = new Date()
     const todaysDate = date.toLocaleDateString('sv-SE')
@@ -51,6 +51,8 @@ export default function DailyLog({foodList, setTodayFoods, updateable}){
                                         protein = {food.protein}
                                         carbs = {food.carbs}
                                         onClick = { () => removeFood(food.key)}
+                                        saveFood = {() => saveFood(food)}
+                                        showSaveButton={true}
                                         showAddButton={false}
                                         updateable={updateable}/>
                             </div>
